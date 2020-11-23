@@ -105,8 +105,8 @@ class ControllerExtensionModuleKeepincrm extends Controller {
     if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
       $this->model_setting_setting->editSetting('keepincrm', $this->request->post);
       $this->session->data['success'] = $this->language->get('text_success');
-      $this->response->redirect($this->url->link('extension/extension', $this->token.'=' . $this->session->data[$this->token], $this->ssl));
-      //$this->response->redirect($this->url->link('extension/extension', $this->token.'=' . $this->session->data[$this->token] . '&type=module', true));
+      #$this->response->redirect($this->url->link('extension/extension', $this->token.'=' . $this->session->data[$this->token], $this->ssl));
+      $this->response->redirect($this->url->link('extension/extension', $this->token.'=' . $this->session->data[$this->token] . '&type=module', true));
     }
 
     if (isset($this->error['warning'])) {
