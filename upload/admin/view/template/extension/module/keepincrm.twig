@@ -1,0 +1,207 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-keepincrm" data-toggle="tooltip" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+        <h1>{{ heading_title }}</h1>
+        <ul class="breadcrumb">
+          {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-pencil"></i>{{ k_settings }}</h3>
+        </div>
+        <div class="panel-body">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab">{{ k_tab_general }}</a></li>
+            <li><a href="#tab-log" data-toggle="tab">{{ k_tab_log }}</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-general">
+              <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-keepincrm" class="form-horizontal">
+                <h3 style="margin-top: 25px; margin-bottom: 25px;">{{ h_basic_settings }}</h3>
+                <div class="form-group required">
+                  <label class="col-sm-2 control-label" for="input-key" >
+                    <span data-toggle="tooltip" title="" data-original-title="{{ d_api_key }}">{{ k_api_key }}</span>
+                  </label>
+                  <div class="col-sm-10">
+                    <input type="text" name="keepincrm_key" value="{{ keepincrm_key }}" placeholder="{{ k_api_key }}" id="input-key" class="form-control" />
+                    {% if error_key %}
+                    <div class="text-danger">{{ error_key }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                {% if not error_key or keepincrm_key %}
+                <div class="form-group" >
+                  <label class="col-sm-2 control-label" for="input-status">
+                    <span data-toggle="tooltip" title="" data-original-title="{{ d_data_types }}">{{ k_data_types }}</span>
+                  </label>
+                  <div class="col-sm-10">
+                    <select name="keepincrm_status" id="input-status" class="form-control">
+                      {% if keepincrm_status %}
+                      <option value="0" selected="selected">{{ k_lead }}</option>
+                      <option value="1">{{ k_client }}</option>
+                      {% else %}
+                      <option value="0">{{ k_lead }}</option>
+                      <option value="1" selected="selected">{{ k_client }}</option>
+                      {% endif %}
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="input-ignore_price_list">
+                    <span data-toggle="tooltip" title="" data-original-title="{{ d_ignore_price_list }}">{{ k_ignore_price_list }}</span>
+                  </label>
+                  <div class="col-sm-10">
+                    <select name="keepincrm_ignore_price_list" id="input-ignore_price_list" class="form-control">
+                      {% if keepincrm_ignore_price_list %}
+                      <option value="1" selected="selected">{{ k_false }}</option>
+                      <option value="0">{{ k_true }}</option>
+                      {% else %}
+                      <option value="1">{{ k_false }}</option>
+                      <option value="0" selected="selected">{{ k_true }}</option>
+                      {% endif %}
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="input-products_total_as_total">
+                    <span data-toggle="tooltip" title="" data-original-title="{{ d_products_total_as_total }}">{{ k_products_total_as_total }}</span>
+                  </label>
+                  <div class="col-sm-10">
+                    <select name="keepincrm_products_total_as_total" id="input-products_total_as_total" class="form-control">
+                      {% if keepincrm_products_total_as_total %}
+                      <option value="1" selected="selected">{{ k_true }}</option>
+                      <option value="0">{{ k_false }}</option>
+                      {% else %}
+                      <option value="1">{{ k_true }}</option>
+                      <option value="0" selected="selected">{{ k_false }}</option>
+                      {% endif %}
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group required">
+                  <label class="col-sm-2 control-label" for="input-source">
+                    <span data-toggle="tooltip" title="" data-original-title="{{ d_source }}">{{ k_source }}</span>
+                  </label>
+                  <div class="col-sm-10">
+                    <input type="text" name="keepincrm_source" value="{{ keepincrm_source }}" placeholder="{{ k_source }}" id="input-source" class="form-control" />
+                    {% if not keepincrm_source %}
+                    <div class="text-danger">{{ field_required }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+
+                <h3 style="margin-top: 25px; margin-bottom: 25px;">{{ h_custom_fild }}</h3>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="input-address">
+                    <span data-toggle="tooltip" title="" data-original-title="{{ d_address }}">{{ k_address }}</span>
+                  </label>
+                  <div class="col-sm-10">
+                    <input type="text" name="keepincrm_address" value="{{ keepincrm_address }}" placeholder="{{ k_address }}" id="input-address" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="input-payment">
+                    <span data-toggle="tooltip" title="" data-original-title="{{ d_payment }}">{{ k_payment }}</span>
+                  </label>
+                  <div class="col-sm-10">
+                    <input type="text" name="keepincrm_payment" value="{{ keepincrm_payment }}" placeholder="{{ k_payment }}" id="input-payment" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="input-delivery">
+                    <span data-toggle="tooltip" title="" data-original-title="{{ d_delivery }}">{{ k_delivery }}</span>
+                  </label>
+                  <div class="col-sm-10">
+                    <input type="text" name="keepincrm_delivery" value="{{ keepincrm_delivery }}" placeholder="{{ k_delivery }}" id="input-delivery" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="input-coupon">
+                    <span data-toggle="tooltip" title="" data-original-title="{{ d_product_details }}">{{ k_product_details }}</span>
+                  </label>
+                  <div class="col-sm-10">
+                    <input type="text" name="keepincrm_product_details" value="{{ keepincrm_product_details }}" placeholder="{{ k_product_details }}" id="input-coupon" class="form-control" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="input-coupon">
+                    <span data-toggle="tooltip" title="" data-original-title="{{ d_coupon }}">{{ k_coupon }}</span>
+                  </label>
+                  <div class="col-sm-10">
+                    <input type="text" name="keepincrm_coupon" value="{{ keepincrm_coupon }}" placeholder="{{ k_coupon }}" id="input-coupon" class="form-control" />
+                  </div>
+                </div>
+
+                <h3 style="margin-top: 25px; margin-bottom: 25px;">{{ h_xml }}</h3>
+                <div class="form-group required">
+                  <label class="col-sm-2 control-label" for="input-store_name">
+                    <span data-toggle="tooltip" title="" data-original-title="{{ d_store_name }}">{{ k_store_name }}</span>
+                  </label>
+                  <div class="col-sm-10">
+                    <input type="text" name="keepincrm_store_name" value="{{ keepincrm_store_name }}" placeholder="{{ k_store_name }}" id="input-coupon" class="form-control" />
+                    {% if not keepincrm_store_name %}
+                    <div class="text-danger">{{ field_required }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="form-group required">
+                  <label class="col-sm-2 control-label" for="input-company_name">
+                    <span data-toggle="tooltip" title="" data-original-title="{{ d_company_name }}">{{ k_company_name }}</span>
+                  </label>
+                  <div class="col-sm-10">
+                    <input type="text" name="keepincrm_company_name" value="{{ keepincrm_company_name }}" placeholder="{{ k_company_name }}" id="input-coupon" class="form-control" />
+                    {% if not keepincrm_company_name %}
+                    <div class="text-danger">{{ field_required }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="input-url_xml">
+                    <span data-toggle="tooltip" title="" data-original-title="{{ d_url_xml }}">{{ k_url_xml }}</span>
+                  </label>
+                  <div class="col-sm-10">
+                    <input type="text" name="keepincrm_url_xml" value="{{ keepincrm_url_xml }}" disabled="disabled" id="input-coupon" class="form-control" />
+                  </div>
+                </div>
+
+                <h3 style="margin-top: 25px; margin-bottom: 25px;">{{ h_contact }}</h3>
+                <div class="form-group required">
+                  <label class="col-sm-2 control-label" for="input-user_id">
+                    <span data-toggle="tooltip" title="" data-original-title="{{ d_user_id }}">{{ k_user_id }}</span>
+                  </label>
+                  <div class="col-sm-10">
+                    <input type="text" name="keepincrm_user_id" value="{{ keepincrm_user_id }}" placeholder="{{ k_user_id }}" id="input-address" class="form-control" />
+                    {% if not keepincrm_user_id %}
+                    <div class="text-danger">{{ field_required }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endif %}
+              </form>
+            </div>
+            <div class="tab-pane" id="tab-log">
+              <p>
+                <textarea wrap="off" rows="15" class="form-control"> {{ log }} </textarea>
+              </p>
+              <div class="text-right"><a href="{{ clear_log }}" class="btn btn-danger"><i class="fa fa-eraser"></i> {{ k_button_clear }}</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align: center; margin-bottom: 20px;">
+    <p>Version: 3.0.1</p>
+    <p>Made by KeepinCRM team. <a href="https://keepincrm.com" target="_blank">https://keepincrm.com</a></p>
+  </div>
+  {{ footer }}
