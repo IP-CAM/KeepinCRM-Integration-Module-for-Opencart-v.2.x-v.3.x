@@ -183,7 +183,7 @@
                       <span data-toggle="tooltip" title="" data-original-title="<?php echo $d_url_xml; ?>"><?php echo $k_url_xml; ?></span>
                     </label>
                     <div class="col-sm-10">
-                      <input type="text" name="keepincrm_url_xml" value="<?php echo $keepincrm_url_xml; ?>" disabled="disabled" id="input-coupon" class="form-control" />
+                      <input type="number" name="keepincrm_url_xml" value="<?php echo $keepincrm_url_xml; ?>" disabled="disabled" id="input-coupon" class="form-control" />
                     </div>
                   </div>
                 <?php } ?>
@@ -202,7 +202,7 @@
   </div>
 
   <div style="text-align: center; margin-bottom: 20px;">
-    <p>Version: 3.0.2</p>
+    <p>Version: 2.2.8</p>
     <p>Made by KeepinCRM team. <a href="https://keepincrm.com" target="_blank">https://keepincrm.com</a></p>
   </div>
   <?php echo $footer; ?>
