@@ -1,57 +1,26 @@
 <?php
-class ControllerExtensionModuleKeepincrm extends Controller {
+class ControllerModuleKeepincrm extends Controller {
   private $error = array();
-  private $token = 'token';
-
-  public function __construct($registry){
-    parent::__construct($registry);
-    $this->token = (defined('VERSION') && version_compare(VERSION,'3.0.0.0','>=')) ? 'user_token' : $this->token;
-
-    $this->load->model('catalog/attribute');
-    $this->load->model('catalog/product');
-    $this->load->language('extension/module/keepincrm');
-    $this->load->model('catalog/category');
-    $this->load->model('catalog/manufacturer');
-    $this->load->model('localisation/length_class');
-  }
 
   public function install() {
-    $this->load->model('extension/module/keepincrm');
-    if (version_compare(VERSION,'3.0.0.0','>=')) {
-      $this->load->model('setting/extension');
-    } else {
-      $this->load->model('extension/extension');
-    }
+    $this->load->model('extension/event'); 
     $this->load->model('user/user_group');
 
-    $this->model_user_user_group->addPermission($this->user->getGroupId(), 'access', 'extension/module/keepincrm');
-    $this->model_user_user_group->addPermission($this->user->getGroupId(), 'modify', 'extension/module/keepincrm');
+    $this->model_user_user_group->addPermission($this->user->getGroupId(), 'access', 'module/keepincrm');
+    $this->model_user_user_group->addPermission($this->user->getGroupId(), 'modify', 'module/keepincrm');
 
-    $this->model_extension_module_keepincrm->install();
+    $this->model_extension_event->addEvent('keepincrm', 'post.order.history.add', 'module/keepincrm/eventAddOrderHistory');
   }
 
   public function uninstall() {
-    $this->load->model('extension/module/keepincrm');
+    $this->load->model('extension/event'); 
     $this->load->model('setting/setting');
-
-    if (version_compare(VERSION,'3.0.0.0','>=')) {
-      $this->load->model('setting/extension');
-    } else {
-      $this->load->model('extension/extension');
-    }
-
-    $this->model_extension_module_keepincrm->uninstall();
-    if (version_compare(VERSION,'3.0.0.0','>=')) {
-      $this->model_setting_extension->uninstall('keepincrm', $this->request->get['extension']);
-    } else {
-      $this->model_extension_extension->uninstall('keepincrm', $this->request->get['extension']);
-    }
-
     $this->model_setting_setting->deleteSetting($this->request->get['extension']);
+    $this->model_extension_event->deleteEvent('keepincrm');
   }
 
   public function index() {
-    $this->load->language('extension/module/keepincrm');
+    $this->load->language('module/keepincrm');
     $data['k_api_key'] = $this->language->get('k_api_key');
     $data['k_data_types'] = $this->language->get('k_data_types');
     $data['k_lead'] = $this->language->get('k_lead'); 
@@ -105,8 +74,7 @@ class ControllerExtensionModuleKeepincrm extends Controller {
     if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
       $this->model_setting_setting->editSetting('keepincrm', $this->request->post);
       $this->session->data['success'] = $this->language->get('text_success');
-      #$this->response->redirect($this->url->link('extension/extension', $this->token.'=' . $this->session->data[$this->token], $this->ssl));
-      $this->response->redirect($this->url->link('extension/extension', $this->token.'=' . $this->session->data[$this->token] . '&type=module', true));
+      $this->response->redirect($this->url->link('extension/module', 'token=' . $this->session->data['token'], $this->ssl));
     }
 
     if (isset($this->error['warning'])) {
@@ -137,20 +105,17 @@ class ControllerExtensionModuleKeepincrm extends Controller {
 
     $data['breadcrumbs'] = array();
     $data['breadcrumbs'][] = array(
-      'text' => $this->language->get('text_home'), 
-      'href' => $this->url->link('common/dashboard', $this->token.'=' . $this->session->data[$this->token], true)
+      'text' => $this->language->get('text_home'), 'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'])
     );
     $data['breadcrumbs'][] = array(
-      'text' => $this->language->get('k_module'), 
-      'href' => $this->url->link('extension/module', $this->token.'=' . $this->session->data[$this->token], true)
+      'text' => $this->language->get('k_module'), 'href' => $this->url->link('extension/module', 'token=' . $this->session->data['token'])
     );
     $data['breadcrumbs'][] = array(
-      'text' => $this->language->get('heading_title'), 
-      'href' => $this->url->link('extension/module/keepincrm', $this->token.'=' . $this->session->data[$this->token], true)
+      'text' => $this->language->get('heading_title'), 'href' => $this->url->link('module/keepincrm', 'token=' . $this->session->data['token'])
     );
 
     $site_url = $_SERVER['HTTP_HOST'];
-    $data['keepincrm_url_xml'] = $site_url.'/index.php?route=extension/module/keepincrm/import_xml';
+    $data['keepincrm_url_xml'] = $site_url.'/index.php?route=module/keepincrm/import_xml';
 
     if (isset($this->request->post['keepincrm_key'])) {
       $data['keepincrm_key'] = $this->request->post['keepincrm_key'];
@@ -230,25 +195,24 @@ class ControllerExtensionModuleKeepincrm extends Controller {
       $data['log'] = '';
     }
 
-    $data['clear_log'] = $this->url->link('extension/module/keepincrm/clearlog', $this->token.'=' . $this->session->data[$this->token], 'SSL');
-    $data['action'] = $this->url->link('extension/module/keepincrm', $this->token.'=' . $this->session->data[$this->token], 'SSL');
-    $data['cancel'] = $this->url->link('extension/extension', $this->token.'=' . $this->session->data[$this->token], 'SSL');
+    $data['clear_log'] = $this->url->link('module/keepincrm/clearlog', 'token=' . $this->session->data['token'], 'SSL');
+    $data['action'] = $this->url->link('module/keepincrm', 'token=' . $this->session->data['token'], 'SSL');
+    $data['cancel'] = $this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL');
 
     $data['header'] = $this->load->controller('common/header');
     $data['column_left'] = $this->load->controller('common/column_left');
     $data['footer'] = $this->load->controller('common/footer');
 
-    $this->response->setOutput($this->load->view('extension/module/keepincrm', $data));
+    $this->response->setOutput($this->load->view(((version_compare(VERSION, '2.2.0.0') >= 0) ? 'module/keepincrm' : 'module/keepincrm.tpl'), $data));
   }
 
   public function clearlog() {
-    //$this->load->language('extension/module/keepincrm');
     //$data['text_success'] = $this->language->get('text_success');
     $handle = fopen(DIR_LOGS . 'keepincrm.log', 'w+');
     fclose($handle);
 
     //$this->session->data['success'] = $this->language->get('text_success');
-    $this->response->redirect($this->url->link('extension/module/keepincrm', $this->token.'=' . $this->session->data[$this->token], true));
+    $this->response->redirect($this->url->link('module/keepincrm', 'token=' . $this->session->data['token']));
   }
 
   protected function validate() {

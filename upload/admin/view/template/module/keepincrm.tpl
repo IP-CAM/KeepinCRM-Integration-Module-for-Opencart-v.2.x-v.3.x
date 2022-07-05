@@ -202,7 +202,7 @@
   </div>
 
   <div style="text-align: center; margin-bottom: 20px;">
-    <p>Version: 3.0.2</p>
+    <p>Version: 2.1.8</p>
     <p>Made by KeepinCRM team. <a href="https://keepincrm.com" target="_blank">https://keepincrm.com</a></p>
   </div>
   <?php echo $footer; ?>

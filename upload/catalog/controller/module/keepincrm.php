@@ -1,16 +1,15 @@
 <?php
-class ControllerExtensionModuleKeepincrm extends Controller {
-  public function eventAddOrderHistory($route, $event_data) {
-    if(!isset($event_data)) {
-      return;
+class ControllerModuleKeepincrm extends Controller {
+  public function eventAddOrderHistory($route, $vdata = '', $order_id = '') {
+    if (version_compare(VERSION, '2.2.0.0') >= 0) {
+      $order_id = $order_id ? $order_id : $vdata[0];
+    } else {
+      $order_id = $route;
     }
-
     $this->load->model('checkout/order'); 
     $this->load->model('account/order');
     $this->load->model('catalog/product');
-
-    $order_id = $event_data[0];
-
+    
     if (count($this->model_account_order->getOrderHistories($order_id)) > 1) {
       return;
     }
@@ -61,7 +60,7 @@ class ControllerExtensionModuleKeepincrm extends Controller {
     } else {
       $lead = false;
     }
-
+    
     if ($keepincrm_ignore_price_list == '0') {
       $ipl = '?ignore_price_list=true';
     }   
@@ -72,7 +71,7 @@ class ControllerExtensionModuleKeepincrm extends Controller {
         $ipl .= '?products_total_as_total=false';
       } 
     }
-
+    
     // Address
     if ($order["payment_country"]) {
       $address .= 'Страна: '. $order["payment_country"].'; ';
@@ -100,7 +99,7 @@ class ControllerExtensionModuleKeepincrm extends Controller {
       } else {
         $price = $product['price'];
       }
-
+      
       $product_info = $this->model_catalog_product->getProduct($product['product_id']);
       $url .= $this->url->link('product/product', 'product_id=' . $product['product_id']).'; ';
       $product_options = $this->model_account_order->getOrderOptions($order_id, $product['order_product_id']);
@@ -183,32 +182,25 @@ class ControllerExtensionModuleKeepincrm extends Controller {
       $totals = $order["total"];
     }
 
-    if (!isset($order["firstname"]) && !isset($order["lastname"])) {
-      $order_person = $order["telephone"];
+    if ($address) {
+      $title = '№ '.$order_id;
     } else {
-      $order_person = $order["lastname"].' '.$order["firstname"];
-    }
-
-    if ($route == "madeshop/order/addOrderHistory") {
-      $title = 'Заявка с быстрого заказа - '.$order_id;
-      $order_person = $order["telephone"];
-    } else {
-      $title = 'Заявка c корзины - '.$order_id;
+      $title = 'Быстрый заказ - '.$order_id;
     }
 
     $order_details = array (
       'title'                 => $title,
-      'comment'               => 'Город: '. $order["payment_city"]. '; '.$order['comment'],
+      'comment'               => $order['comment'],
       'total'                 => $totals,
       'main_responsible_id'   => $keepincrm_user_id,
       'source_id'             => $keepincrm_source,
       'client_attributes'     => array (
-        'person'              => $order_person,
+        'person'              => $order["firstname"].' '.$order["lastname"],
         'email'               => $email,
         'lead'                => $lead,
         'source_id'           => $keepincrm_source,
         'phones'              => array (
-          0                   => $order["telephone"]
+          0                   => $order["telephone"],
         ),
       ),
       'jobs_attributes'       => $products_list,
