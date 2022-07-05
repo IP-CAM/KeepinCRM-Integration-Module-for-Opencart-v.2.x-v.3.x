@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $_['text_success']                = 'Module settings refreshed!';
 $_['k_settings']                  = 'Settings';
 $_['heading_title']               = 'KeepinCRM Integration';

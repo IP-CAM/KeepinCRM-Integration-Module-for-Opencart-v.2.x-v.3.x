@@ -1,121 +1,5 @@
 <?php
 class ControllerExtensionModuleKeepincrm extends Controller {
-
-  public function eventAddMinprice($route, $call_info) {
-    $this->load->model('catalog/product');
-    $keepincrm_key = $this->config->get('keepincrm_key');
-    $keepincrm_source = $this->config->get('keepincrm_source');
-
-    $data = $call_info[0];
-    $product = $this->model_catalog_product->getProduct($data['shop_url']);
-
-    $params = array (
-      'title'                 => "Заявка нашли дешевле",
-      'comment'               => $product['name'].' - '.$data['url'],
-      'source_id'             => $keepincrm_source,
-      'client_attributes'     => array (
-        'person'              => $data['name'],
-        'lead'                => true,
-        'source_id'           => $keepincrm_source,
-        'phones'              => array (
-          0                   => $data['phone']
-        )
-      )
-    );
-
-    $curl = curl_init();
-    curl_setopt($curl, CURLOPT_URL, 'https://api.keepincrm.com/v1/agreements');
-    curl_setopt($curl, CURLOPT_HTTPHEADER, array('Accept: application/json', 'X-Auth-Token: '.$keepincrm_key.'','Content-Type: application/json'));
-    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($curl, CURLOPT_POST, 1);
-    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($params));
-
-    $response = curl_exec($curl);
-    $info = curl_getinfo($curl);
-    $response = print_r($response, TRUE);
-    $params = print_r($params, TRUE);
-    $http_code = print_r($info["http_code"], TRUE);
-    curl_close($curl);
-
-    $find = array("\n", " ");
-    $file = DIR_LOGS ."keepincrm.log";
-    $log = date('Y-m-d H:i:s') . ' - ';
-    $log .= str_replace($find, "", $http_code).' - ';
-    $log .= str_replace($find, "", $response).' - ';
-    $log .= str_replace($find, "", $params);
-
-    if (!file_exists($file)) {
-      $fp = fopen($file, "w");
-      file_put_contents($file, $log . PHP_EOL, FILE_APPEND);
-      fclose($fp);
-    } else {
-      $filedata = file($file, FILE_IGNORE_NEW_LINES);
-      file_put_contents($file, $log . PHP_EOL, FILE_APPEND);
-    }
-  }
-
-  public function eventAddCall($route, $call_info) {
-    $data = $call_info[0];
-    $keepincrm_key = $this->config->get('keepincrm_key');
-    $keepincrm_source = $this->config->get('keepincrm_source');
-    
-    if ($data['time'] == 0) {
-      $data['comment'] = 'Перезвонить сейчас';
-    } elseif ($data['time'] == 1) {
-      $data['comment'] = 'Перезвонить в первой половине дня';
-    } elseif ($data['time'] == 2) {
-      $data['comment'] = 'Перезвонить во второй половине дня';
-    }
-
-    $params = array (
-      'title'                 => "Заявка с сайта перезвонить",
-      'comment'               => $data['comment'],
-      'source_id'             => $keepincrm_source,
-      'client_attributes'     => array (
-        'person'              => $data['name'],
-        'lead'                => true,
-        'source_id'           => $keepincrm_source,
-        'phones'              => array (
-          0                   => $data['phone']
-        )
-      )
-    );
-
-    $curl = curl_init();
-    curl_setopt($curl, CURLOPT_URL, 'https://api.keepincrm.com/v1/agreements');
-    curl_setopt($curl, CURLOPT_HTTPHEADER, array('Accept: application/json', 'X-Auth-Token: '.$keepincrm_key.'','Content-Type: application/json'));
-    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($curl, CURLOPT_POST, 1);
-    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($params));
-
-    $response = curl_exec($curl);
-    $info = curl_getinfo($curl);
-    $response = print_r($response, TRUE);
-    $params = print_r($params, TRUE);
-    $http_code = print_r($info["http_code"], TRUE);
-    curl_close($curl);
-
-    $find = array("\n", " ");
-    $file = DIR_LOGS ."keepincrm.log";
-    $log = date('Y-m-d H:i:s') . ' - ';
-    $log .= str_replace($find, "", $http_code).' - ';
-    $log .= str_replace($find, "", $response).' - ';
-    $log .= str_replace($find, "", $params);
-
-    if (!file_exists($file)) {
-      $fp = fopen($file, "w");
-      file_put_contents($file, $log . PHP_EOL, FILE_APPEND);
-      fclose($fp);
-    } else {
-      $filedata = file($file, FILE_IGNORE_NEW_LINES);
-      file_put_contents($file, $log . PHP_EOL, FILE_APPEND);
-    }
-  }
-
   public function eventAddOrderHistory($route, $event_data) {
     if(!isset($event_data)) {
       return;
@@ -177,7 +61,7 @@ class ControllerExtensionModuleKeepincrm extends Controller {
     } else {
       $lead = false;
     }
-    
+
     if ($keepincrm_ignore_price_list == '0') {
       $ipl = '?ignore_price_list=true';
     }   
@@ -188,7 +72,7 @@ class ControllerExtensionModuleKeepincrm extends Controller {
         $ipl .= '?products_total_as_total=false';
       } 
     }
-    
+
     // Address
     if ($order["payment_country"]) {
       $address .= 'Страна: '. $order["payment_country"].'; ';
@@ -216,7 +100,7 @@ class ControllerExtensionModuleKeepincrm extends Controller {
       } else {
         $price = $product['price'];
       }
-      
+
       $product_info = $this->model_catalog_product->getProduct($product['product_id']);
       $url .= $this->url->link('product/product', 'product_id=' . $product['product_id']).'; ';
       $product_options = $this->model_account_order->getOrderOptions($order_id, $product['order_product_id']);
@@ -228,6 +112,7 @@ class ControllerExtensionModuleKeepincrm extends Controller {
       if ($optionstit) {
         $products_list[$i] = array (
           'amount'              => $product["quantity"],
+          'title'               => $product["name"].' '.$optionstit,
           'product_attributes'  => array (
             'title'             => $product["name"].' '.$optionstit,
             'price'             => $price 
@@ -236,6 +121,7 @@ class ControllerExtensionModuleKeepincrm extends Controller {
       } else {
         $products_list[$i] = array (
           'amount'              => $product["quantity"],
+          'title'               => $product["name"],
           'product_attributes'  => array (
             'sku'               => $product_info["sku"],
             'title'             => $product["name"],
@@ -296,11 +182,11 @@ class ControllerExtensionModuleKeepincrm extends Controller {
     } else {
       $totals = $order["total"];
     }
-    
+
     if (!isset($order["firstname"]) && !isset($order["lastname"])) {
       $order_person = $order["telephone"];
     } else {
-      $order_person = $order["firstname"].' '.$order["lastname"];
+      $order_person = $order["lastname"].' '.$order["firstname"];
     }
 
     if ($route == "madeshop/order/addOrderHistory") {
@@ -314,7 +200,7 @@ class ControllerExtensionModuleKeepincrm extends Controller {
       'title'                 => $title,
       'comment'               => 'Город: '. $order["payment_city"]. '; '.$order['comment'],
       'total'                 => $totals,
-      'user_id'               => $keepincrm_user_id,
+      'main_responsible_id'   => $keepincrm_user_id,
       'source_id'             => $keepincrm_source,
       'client_attributes'     => array (
         'person'              => $order_person,
@@ -358,35 +244,9 @@ class ControllerExtensionModuleKeepincrm extends Controller {
       fclose($fp);
     } else {
       $filedata = file($file, FILE_IGNORE_NEW_LINES);
-      // $count = count($filedata);
-      // if ($count >= '500') {
-      //   $first_line = array_shift($filedata);
-      //   file_put_contents($file, implode("\r\n", $filedata)."\r\n");
-      // }
       file_put_contents($file, $log . PHP_EOL, FILE_APPEND);
     }
-
-    // Add config
-    if ($info["http_code"] == '401' || $info["http_code"] == '422') {
-      $mail = new Mail();
-      $mail->protocol = $this->config->get('config_mail_protocol');
-      $mail->parameter = $this->config->get('config_mail_parameter');
-      $mail->smtp_hostname = $this->config->get('config_mail_smtp_hostname');
-      $mail->smtp_username = $this->config->get('config_mail_smtp_username');
-      $mail->smtp_password = html_entity_decode($this->config->get('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
-      $mail->smtp_port = $this->config->get('config_mail_smtp_port');
-      $mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
-      $mail->setTo($this->config->get('config_email'));
-      $mail->setFrom('tester@gmail.com');
-      $mail->setSender('keepincrm');
-      $mail->setSubject(html_entity_decode($info["http_code"], ENT_QUOTES, 'UTF-8'));
-      $mail->setText(date('Y-m-d H:i:s')."\n".$info["http_code"]."\n".$response."\n".$order_details);
-      $mail->send();
-    }
   }
-
-  // private function touchLog($options) {
-  // }
 
   public function import_xml() {
     set_time_limit(300);
@@ -544,7 +404,6 @@ class ControllerExtensionModuleKeepincrm extends Controller {
         echo("\t\t\t<category id=\"$id\" parentId=\"$parent_id\">$name</category>\n");
       }
     }
-    //echo("\t\t\t<category id=\"999999\">Без категорії</category>\n");
     echo("\t\t</categories>\n");
     echo("\t\t<offers>\n");
 
@@ -588,8 +447,6 @@ class ControllerExtensionModuleKeepincrm extends Controller {
 
       if ($product_cat_parent) {
         echo("\t\t\t\t<categoryId>$category_id</categoryId>\n");
-      } else {
-        //echo("\t\t\t\t<categoryId>999999</categoryId>\n");
       }
 
       echo("\t\t\t\t<picture>$site_url/image/$image</picture>\n");

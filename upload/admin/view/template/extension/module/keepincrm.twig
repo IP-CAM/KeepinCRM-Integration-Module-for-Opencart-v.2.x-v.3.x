@@ -39,7 +39,7 @@
                   </div>
                 </div>
                 {% if not error_key or keepincrm_key %}
-                <div class="form-group" >
+                <div class="form-group">
                   <label class="col-sm-2 control-label" for="input-status">
                     <span data-toggle="tooltip" title="" data-original-title="{{ d_data_types }}">{{ k_data_types }}</span>
                   </label>
@@ -92,8 +92,19 @@
                     <span data-toggle="tooltip" title="" data-original-title="{{ d_source }}">{{ k_source }}</span>
                   </label>
                   <div class="col-sm-10">
-                    <input type="text" name="keepincrm_source" value="{{ keepincrm_source }}" placeholder="{{ k_source }}" id="input-source" class="form-control" />
+                    <input type="number" name="keepincrm_source" value="{{ keepincrm_source }}" placeholder="{{ k_source }}" id="input-source" class="form-control" />
                     {% if not keepincrm_source %}
+                    <div class="text-danger">{{ field_required }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="form-group required">
+                  <label class="col-sm-2 control-label" for="input-user_id">
+                    <span data-toggle="tooltip" title="" data-original-title="{{ d_user_id }}">{{ k_user_id }}</span>
+                  </label>
+                  <div class="col-sm-10">
+                    <input type="number" name="keepincrm_user_id" value="{{ keepincrm_user_id }}" placeholder="{{ k_user_id }}" id="input-user_id" class="form-control" />
+                    {% if not keepincrm_user_id %}
                     <div class="text-danger">{{ field_required }}</div>
                     {% endif %}
                   </div>
@@ -105,7 +116,7 @@
                     <span data-toggle="tooltip" title="" data-original-title="{{ d_address }}">{{ k_address }}</span>
                   </label>
                   <div class="col-sm-10">
-                    <input type="text" name="keepincrm_address" value="{{ keepincrm_address }}" placeholder="{{ k_address }}" id="input-address" class="form-control" />
+                    <input type="number" name="keepincrm_address" value="{{ keepincrm_address }}" placeholder="{{ k_address }}" id="input-address" class="form-control" />
                   </div>
                 </div>
                 <div class="form-group">
@@ -113,7 +124,7 @@
                     <span data-toggle="tooltip" title="" data-original-title="{{ d_payment }}">{{ k_payment }}</span>
                   </label>
                   <div class="col-sm-10">
-                    <input type="text" name="keepincrm_payment" value="{{ keepincrm_payment }}" placeholder="{{ k_payment }}" id="input-payment" class="form-control" />
+                    <input type="number" name="keepincrm_payment" value="{{ keepincrm_payment }}" placeholder="{{ k_payment }}" id="input-payment" class="form-control" />
                   </div>
                 </div>
                 <div class="form-group">
@@ -121,7 +132,7 @@
                     <span data-toggle="tooltip" title="" data-original-title="{{ d_delivery }}">{{ k_delivery }}</span>
                   </label>
                   <div class="col-sm-10">
-                    <input type="text" name="keepincrm_delivery" value="{{ keepincrm_delivery }}" placeholder="{{ k_delivery }}" id="input-delivery" class="form-control" />
+                    <input type="number" name="keepincrm_delivery" value="{{ keepincrm_delivery }}" placeholder="{{ k_delivery }}" id="input-delivery" class="form-control" />
                   </div>
                 </div>
                 <div class="form-group">
@@ -129,7 +140,7 @@
                     <span data-toggle="tooltip" title="" data-original-title="{{ d_product_details }}">{{ k_product_details }}</span>
                   </label>
                   <div class="col-sm-10">
-                    <input type="text" name="keepincrm_product_details" value="{{ keepincrm_product_details }}" placeholder="{{ k_product_details }}" id="input-coupon" class="form-control" />
+                    <input type="number" name="keepincrm_product_details" value="{{ keepincrm_product_details }}" placeholder="{{ k_product_details }}" id="input-coupon" class="form-control" />
                   </div>
                 </div>
                 <div class="form-group">
@@ -137,7 +148,7 @@
                     <span data-toggle="tooltip" title="" data-original-title="{{ d_coupon }}">{{ k_coupon }}</span>
                   </label>
                   <div class="col-sm-10">
-                    <input type="text" name="keepincrm_coupon" value="{{ keepincrm_coupon }}" placeholder="{{ k_coupon }}" id="input-coupon" class="form-control" />
+                    <input type="number" name="keepincrm_coupon" value="{{ keepincrm_coupon }}" placeholder="{{ k_coupon }}" id="input-coupon" class="form-control" />
                   </div>
                 </div>
 
@@ -172,19 +183,6 @@
                     <input type="text" name="keepincrm_url_xml" value="{{ keepincrm_url_xml }}" disabled="disabled" id="input-coupon" class="form-control" />
                   </div>
                 </div>
-
-                <h3 style="margin-top: 25px; margin-bottom: 25px;">{{ h_contact }}</h3>
-                <div class="form-group required">
-                  <label class="col-sm-2 control-label" for="input-user_id">
-                    <span data-toggle="tooltip" title="" data-original-title="{{ d_user_id }}">{{ k_user_id }}</span>
-                  </label>
-                  <div class="col-sm-10">
-                    <input type="text" name="keepincrm_user_id" value="{{ keepincrm_user_id }}" placeholder="{{ k_user_id }}" id="input-address" class="form-control" />
-                    {% if not keepincrm_user_id %}
-                    <div class="text-danger">{{ field_required }}</div>
-                    {% endif %}
-                  </div>
-                </div>
                 {% endif %}
               </form>
             </div>
@@ -201,7 +199,7 @@
   </div>
 
   <div style="text-align: center; margin-bottom: 20px;">
-    <p>Version: 3.0.1</p>
+    <p>Version: 3.0.2</p>
     <p>Made by KeepinCRM team. <a href="https://keepincrm.com" target="_blank">https://keepincrm.com</a></p>
   </div>
   {{ footer }}

@@ -95,8 +95,19 @@
                       <span data-toggle="tooltip" title="" data-original-title="<?php echo $d_source; ?>"><?php echo $k_source; ?></span>
                     </label>
                     <div class="col-sm-10">
-                      <input type="text" name="keepincrm_source" value="<?php echo $keepincrm_source; ?>" placeholder="<?php echo $k_source; ?>" id="input-source" class="form-control" />
+                      <input type="number" name="keepincrm_source" value="<?php echo $keepincrm_source; ?>" placeholder="<?php echo $k_source; ?>" id="input-source" class="form-control" />
                       <?php if (!$keepincrm_source) { ?>
+                        <div class="text-danger"><?php echo $field_required; ?></div>
+                      <?php } ?>
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-user_id">
+                      <span data-toggle="tooltip" title="" data-original-title="<?php echo $d_user_id; ?>"><?php echo $k_user_id; ?></span>
+                    </label>
+                    <div class="col-sm-10">
+                      <input type="number" name="keepincrm_user_id" value="<?php echo $keepincrm_user_id; ?>" placeholder="<?php echo $k_user_id; ?>" id="input-user_id" class="form-control" />
+                      <?php if (!$keepincrm_user_id) { ?>
                         <div class="text-danger"><?php echo $field_required; ?></div>
                       <?php } ?>
                     </div>
@@ -108,7 +119,7 @@
                       <span data-toggle="tooltip" title="" data-original-title="<?php echo $d_address; ?>"><?php echo $k_address; ?></span>
                     </label>
                     <div class="col-sm-10">
-                      <input type="text" name="keepincrm_address" value="<?php echo $keepincrm_address; ?>" placeholder="<?php echo $k_address; ?>" id="input-address" class="form-control" />
+                      <input type="number" name="keepincrm_address" value="<?php echo $keepincrm_address; ?>" placeholder="<?php echo $k_address; ?>" id="input-address" class="form-control" />
                     </div>
                   </div>
                   <div class="form-group">
@@ -116,7 +127,7 @@
                       <span data-toggle="tooltip" title="" data-original-title="<?php echo $d_payment; ?>"><?php echo $k_payment; ?></span>
                     </label>
                     <div class="col-sm-10">
-                      <input type="text" name="keepincrm_payment" value="<?php echo $keepincrm_payment; ?>" placeholder="<?php echo $k_payment; ?>" id="input-payment" class="form-control" />
+                      <input type="number" name="keepincrm_payment" value="<?php echo $keepincrm_payment; ?>" placeholder="<?php echo $k_payment; ?>" id="input-payment" class="form-control" />
                     </div>
                   </div>
                   <div class="form-group">
@@ -124,7 +135,7 @@
                       <span data-toggle="tooltip" title="" data-original-title="<?php echo $d_delivery; ?>"><?php echo $k_delivery; ?></span>
                     </label>
                     <div class="col-sm-10">
-                      <input type="text" name="keepincrm_delivery" value="<?php echo $keepincrm_delivery; ?>" placeholder="<?php echo $k_delivery; ?>" id="input-delivery" class="form-control" />
+                      <input type="number" name="keepincrm_delivery" value="<?php echo $keepincrm_delivery; ?>" placeholder="<?php echo $k_delivery; ?>" id="input-delivery" class="form-control" />
                     </div>
                   </div>
                   <div class="form-group">
@@ -132,7 +143,7 @@
                       <span data-toggle="tooltip" title="" data-original-title="<?php echo $d_product_details; ?>"><?php echo $k_product_details; ?></span>
                     </label>
                     <div class="col-sm-10">
-                      <input type="text" name="keepincrm_product_details" value="<?php echo $keepincrm_product_details; ?>" placeholder="<?php echo $k_product_details; ?>" id="input-coupon" class="form-control" />
+                      <input type="number" name="keepincrm_product_details" value="<?php echo $keepincrm_product_details; ?>" placeholder="<?php echo $k_product_details; ?>" id="input-coupon" class="form-control" />
                     </div>
                   </div>
                   <div class="form-group">
@@ -140,7 +151,7 @@
                       <span data-toggle="tooltip" title="" data-original-title="<?php echo $d_coupon; ?>"><?php echo $k_coupon; ?></span>
                     </label>
                     <div class="col-sm-10">
-                      <input type="text" name="keepincrm_coupon" value="<?php echo $keepincrm_coupon; ?>" placeholder="<?php echo $k_coupon; ?>" id="input-coupon" class="form-control" />
+                      <input type="number" name="keepincrm_coupon" value="<?php echo $keepincrm_coupon; ?>" placeholder="<?php echo $k_coupon; ?>" id="input-coupon" class="form-control" />
                     </div>
                   </div>
 
@@ -175,19 +186,6 @@
                       <input type="text" name="keepincrm_url_xml" value="<?php echo $keepincrm_url_xml; ?>" disabled="disabled" id="input-coupon" class="form-control" />
                     </div>
                   </div>
-
-                  <h3 style="margin-top: 25px; margin-bottom: 25px;"><?php echo $h_contact; ?></h3>
-                  <div class="form-group required">
-                    <label class="col-sm-2 control-label" for="input-user_id">
-                      <span data-toggle="tooltip" title="" data-original-title="<?php echo $d_user_id; ?>"><?php echo $k_user_id; ?></span>
-                    </label>
-                    <div class="col-sm-10">
-                      <input type="text" name="keepincrm_user_id" value="<?php echo $keepincrm_user_id; ?>" placeholder="<?php echo $k_user_id; ?>" id="input-address" class="form-control" />
-                      <?php if (!$keepincrm_user_id) { ?>
-                        <div class="text-danger"><?php echo $field_required; ?></div>
-                      <?php } ?>
-                    </div>
-                  </div>
                 <?php } ?>
               </form>
             </div>
@@ -204,7 +202,7 @@
   </div>
 
   <div style="text-align: center; margin-bottom: 20px;">
-    <p>Version: 3.0.1</p>
+    <p>Version: 3.0.2</p>
     <p>Made by KeepinCRM team. <a href="https://keepincrm.com" target="_blank">https://keepincrm.com</a></p>
   </div>
   <?php echo $footer; ?>
