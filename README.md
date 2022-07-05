@@ -1,4 +1,4 @@
-# Інтеграція KeepinCRM з OpenCart v2.2.0 #
+# Інтеграція KeepinCRM з OpenCart v2.2 #
 
 * Миттєве відправлення даних з Opencart в [KeepinCRM](https://bit.ly/3KCbyDR) при оформленні замовлення
 * Миттєве відправлення даних з Opencart в [KeepinCRM](https://bit.ly/3KCbyDR) при створенні швидкого замовлення в 1 клік
