@@ -1,4 +1,3 @@
-
 # Інтеграція KeepinCRM з OpenCart v2.1 #
 
 * Миттєве відправлення даних з Opencart в [KeepinCRM](https://bit.ly/3KCbyDR) при оформленні замовлення
@@ -6,11 +5,11 @@
 * Генерація XML на основі товарів з сайту
 
 ## Версія ##
-OpenCart [3.0.0](https://github.com/KeepinCRM/opencart-module/tree/master) - [завантажити](https://github.com/KeepinCRM/opencart-module/archive/refs/heads/master.zip)
+OpenCart [3.0.0](https://github.com/KeepinCRM/opencart-module/tree/master) - [завантажити](https://github.com/KeepinCRM/opencart-module/raw/master/keepincrm3.ocmod.zip)
 
-OpenCart [2.2.0](https://github.com/KeepinCRM/opencart-module/tree/v2.2.0) - [завантажити](https://github.com/KeepinCRM/opencart-module/archive/refs/heads/v2.2.0.zip)
+OpenCart [2.2.0](https://github.com/KeepinCRM/opencart-module/tree/v2.2.0) - [завантажити](https://github.com/KeepinCRM/opencart-module/raw/v2.2.0/keepincrm2.2.ocmod.zip)
 
-OpenCart [2.1.0](https://github.com/KeepinCRM/opencart-module/tree/v2.1.0) - [завантажити](https://github.com/KeepinCRM/opencart-module/archive/refs/heads/v2.1.0.zip)
+OpenCart [2.1.0](https://github.com/KeepinCRM/opencart-module/tree/v2.1.0) - [завантажити](https://github.com/KeepinCRM/opencart-module/raw/v2.1.0/keepincrm2.1.ocmod.zip)
 
 ## Встановлення ##
 1. Завантажити плагін архівом згідно Вашої версії OpenCart
