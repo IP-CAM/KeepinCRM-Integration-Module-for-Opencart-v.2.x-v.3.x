@@ -58,38 +58,6 @@
                       </select>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label class="col-sm-2 control-label" for="input-ignore_price_list">
-                      <span data-toggle="tooltip" title="" data-original-title="<?php echo $d_ignore_price_list; ?>"><?php echo $k_ignore_price_list; ?></span>
-                    </label>
-                    <div class="col-sm-10">
-                      <select name="keepincrm_ignore_price_list" id="input-ignore_price_list" class="form-control">
-                        <?php if ($keepincrm_ignore_price_list) { ?>
-                          <option value="1" selected="selected"><?php echo $k_false; ?></option>
-                          <option value="0"><?php echo $k_true; ?></option>
-                        <?php } else { ?>
-                          <option value="1"><?php echo $k_false; ?></option>
-                          <option value="0" selected="selected"><?php echo $k_true; ?></option>
-                        <?php } ?>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-sm-2 control-label" for="input-products_total_as_total">
-                      <span data-toggle="tooltip" title="" data-original-title="<?php echo $d_products_total_as_total; ?>"><?php echo $k_products_total_as_total; ?></span>
-                    </label>
-                    <div class="col-sm-10">
-                      <select name="keepincrm_products_total_as_total" id="input-products_total_as_total" class="form-control">
-                        <?php if ($keepincrm_products_total_as_total) { ?>
-                          <option value="1" selected="selected"><?php echo $k_true; ?></option>
-                          <option value="0"><?php echo $k_false; ?></option>
-                        <?php } else { ?>
-                          <option value="1"><?php echo $k_true; ?></option>
-                          <option value="0" selected="selected"><?php echo $k_false; ?></option>
-                        <?php } ?>
-                      </select>
-                    </div>
-                  </div>
                   <div class="form-group required">
                     <label class="col-sm-2 control-label" for="input-source">
                       <span data-toggle="tooltip" title="" data-original-title="<?php echo $d_source; ?>"><?php echo $k_source; ?></span>
@@ -140,14 +108,6 @@
                   </div>
                   <div class="form-group">
                     <label class="col-sm-2 control-label" for="input-coupon">
-                      <span data-toggle="tooltip" title="" data-original-title="<?php echo $d_product_details; ?>"><?php echo $k_product_details; ?></span>
-                    </label>
-                    <div class="col-sm-10">
-                      <input type="number" name="keepincrm_product_details" value="<?php echo $keepincrm_product_details; ?>" placeholder="<?php echo $k_product_details; ?>" id="input-coupon" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-sm-2 control-label" for="input-coupon">
                       <span data-toggle="tooltip" title="" data-original-title="<?php echo $d_coupon; ?>"><?php echo $k_coupon; ?></span>
                     </label>
                     <div class="col-sm-10">
@@ -180,10 +140,10 @@
                   </div>
                   <div class="form-group">
                     <label class="col-sm-2 control-label" for="input-url_xml">
-                      <span data-toggle="tooltip" title="" data-original-title="<?php echo $d_url_xml; ?>"><?php echo $k_url_xml; ?></span>
+                      <?php echo $k_url_xml; ?>
                     </label>
                     <div class="col-sm-10">
-                      <input type="number" name="keepincrm_url_xml" value="<?php echo $keepincrm_url_xml; ?>" disabled="disabled" id="input-coupon" class="form-control" />
+                      <input type="text" name="keepincrm_url_xml" value="<?php echo $keepincrm_url_xml; ?>" disabled="disabled" id="input-url_xml" class="form-control" />
                     </div>
                   </div>
                 <?php } ?>
@@ -202,7 +162,7 @@
   </div>
 
   <div style="text-align: center; margin-bottom: 20px;">
-    <p>Version: 2.2.8</p>
+    <p>Version: 2.2.10</p>
     <p>Made by KeepinCRM team. <a href="https://keepincrm.com" target="_blank">https://keepincrm.com</a></p>
   </div>
   <?php echo $footer; ?>
