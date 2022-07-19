@@ -62,12 +62,7 @@ class ControllerExtensionModuleKeepincrm extends Controller {
     $data['k_source'] = $this->language->get('k_source');
     $data['k_settings'] = $this->language->get('k_settings');
     $data['k_module'] = $this->language->get('k_module');
-    $data['k_ignore_price_list'] = $this->language->get('k_ignore_price_list');
-    $data['k_true'] = $this->language->get('k_true');
-    $data['k_false'] = $this->language->get('k_false');
     $data['k_coupon'] = $this->language->get('k_coupon');
-    $data['k_product_details'] = $this->language->get('k_product_details');
-    $data['k_products_total_as_total'] = $this->language->get('k_products_total_as_total');
     $data['k_store_name'] = $this->language->get('k_store_name');
     $data['k_company_name'] = $this->language->get('k_company_name');
     $data['k_url_xml'] = $this->language->get('k_url_xml');
@@ -85,17 +80,13 @@ class ControllerExtensionModuleKeepincrm extends Controller {
     $data['field_required'] = $this->language->get('field_required');
     $data['d_api_key'] = $this->language->get('d_api_key');
     $data['d_data_types'] = $this->language->get('d_data_types');
-    $data['d_ignore_price_list'] = $this->language->get('d_ignore_price_list');
-    $data['d_products_total_as_total'] = $this->language->get('d_products_total_as_total');
     $data['d_source'] = $this->language->get('d_source');
     $data['d_address'] = $this->language->get('d_address');
     $data['d_payment'] = $this->language->get('d_payment');
     $data['d_delivery'] = $this->language->get('d_delivery');
     $data['d_coupon'] = $this->language->get('d_coupon');
-    $data['d_product_details'] = $this->language->get('d_product_details');
     $data['d_store_name'] = $this->language->get('d_store_name');
     $data['d_company_name'] = $this->language->get('d_company_name');
-    $data['d_url_xml'] = $this->language->get('d_url_xml');
     $data['d_user_id'] = $this->language->get('d_user_id');
     $data['text_success'] = $this->language->get('text_success');
 
@@ -182,25 +173,10 @@ class ControllerExtensionModuleKeepincrm extends Controller {
     } else {
       $data['keepincrm_coupon'] = $this->config->get('keepincrm_coupon');
     }
-    if (isset($this->request->post['keepincrm_product_details'])) {
-      $data['keepincrm_product_details'] = $this->request->post['keepincrm_product_details'];
-    } else {
-      $data['keepincrm_product_details'] = $this->config->get('keepincrm_product_details');
-    }
     if (isset($this->request->post['keepincrm_status'])) {
       $data['keepincrm_status'] = $this->request->post['keepincrm_status'];
     } else {
       $data['keepincrm_status'] = $this->config->get('keepincrm_status') ? $this->config->get('keepincrm_status') : 1;
-    }
-    if (isset($this->request->post['keepincrm_ignore_price_list'])) {
-      $data['keepincrm_ignore_price_list'] = $this->request->post['keepincrm_ignore_price_list'];
-    } else {
-      $data['keepincrm_ignore_price_list'] = $this->config->get('keepincrm_ignore_price_list') ? $this->config->get('keepincrm_ignore_price_list') : 1;
-    }
-    if (isset($this->request->post['keepincrm_products_total_as_total'])) {
-      $data['keepincrm_products_total_as_total'] = $this->request->post['keepincrm_products_total_as_total'];
-    } else {
-      $data['keepincrm_products_total_as_total'] = $this->config->get('keepincrm_products_total_as_total') ? $this->config->get('keepincrm_products_total_as_total') : 1;
     }
     if (isset($this->request->post['keepincrm_company_name'])) {
       $data['keepincrm_company_name'] = $this->request->post['keepincrm_company_name'];

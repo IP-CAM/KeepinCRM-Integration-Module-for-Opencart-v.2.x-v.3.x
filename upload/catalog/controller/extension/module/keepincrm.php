@@ -22,22 +22,16 @@ class ControllerExtensionModuleKeepincrm extends Controller {
     $keepincrm_key = $this->config->get('keepincrm_key');
     $keepincrm_status = $this->config->get('keepincrm_status');
     $keepincrm_source = $this->config->get('keepincrm_source');
-    $keepincrm_ignore_price_list = $this->config->get('keepincrm_ignore_price_list');
-    $keepincrm_products_total_as_total = $this->config->get('keepincrm_products_total_as_total');
     $keepincrm_user_id = $this->config->get('keepincrm_user_id');
 
     $keepincrm_address_field = $this->config->get('keepincrm_address');
     $keepincrm_coupon_field = $this->config->get('keepincrm_coupon');
     $keepincrm_payment_field = $this->config->get('keepincrm_payment');
     $keepincrm_delivery_field = $this->config->get('keepincrm_delivery');
-    $keepincrm_product_details_field = $this->config->get('keepincrm_product_details');
 
-    # NOTE: move all this vars to $data['var_name']
     $cupon = '';
     $address = '';
     $shipping = '';
-    $url = '';
-    $ipl = '';
 
     foreach ($order_totals as $tot) {
       if ($tot["code"] == 'coupon') {
@@ -62,32 +56,21 @@ class ControllerExtensionModuleKeepincrm extends Controller {
       $lead = false;
     }
 
-    if ($keepincrm_ignore_price_list == '0') {
-      $ipl = '?ignore_price_list=true';
-    }   
-    if ($keepincrm_products_total_as_total == '0') {
-      if ($ipl == '?ignore_price_list=true') {
-        $ipl .= '&products_total_as_total=false';
-      } else {
-        $ipl .= '?products_total_as_total=false';
-      } 
-    }
-
     // Address
     if ($order["payment_country"]) {
-      $address .= 'Страна: '. $order["payment_country"].'; ';
+      $address .= 'Країна: '. $order["payment_country"].'; ';
     };
     if ($order["payment_zone"]) {
-      $address .= 'Регион: '. $order["payment_zone"].'; ';
+      $address .= 'Регіон: '. $order["payment_zone"].'; ';
     };
     if ($order["payment_city"]) {
-      $address .= 'Город: '. $order["payment_city"].'; ';
+      $address .= 'Місто: '. $order["payment_city"].'; ';
     };
     if ($order["payment_address_1"]) {
-      $address .= 'Адрес: '. $order["payment_address_1"].'; ';
+      $address .= 'Адреса: '. $order["payment_address_1"].'; ';
     };
     if ($order["payment_address_2"]) {
-      $address .= 'Адрес: '. $order["payment_address_2"].' ';
+      $address .= 'Адреса: '. $order["payment_address_2"].' ';
     };
 
     $i = 0;
@@ -102,7 +85,6 @@ class ControllerExtensionModuleKeepincrm extends Controller {
       }
 
       $product_info = $this->model_catalog_product->getProduct($product['product_id']);
-      $url .= $this->url->link('product/product', 'product_id=' . $product['product_id']).'; ';
       $product_options = $this->model_account_order->getOrderOptions($order_id, $product['order_product_id']);
       $optionstit = '';
 
@@ -156,13 +138,6 @@ class ControllerExtensionModuleKeepincrm extends Controller {
       );
       $i++;
     }
-    if ($keepincrm_product_details_field) {
-      $custom_fields[$i] = array (
-        'name'          => "field_".$keepincrm_product_details_field,
-        'value'         => $url
-      );
-      $i++;
-    }
     if ($keepincrm_coupon_field) {
       $custom_fields[$i] = array (
         'name'          => "field_".$keepincrm_coupon_field,
@@ -177,29 +152,22 @@ class ControllerExtensionModuleKeepincrm extends Controller {
       $email = '';
     }
 
-    if (isset($product['tax_class_id'])) {
-      $totals = $this->currency->format($this->tax->calculate($order["total"], $product['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
-    } else {
-      $totals = $order["total"];
-    }
-
     if (!isset($order["firstname"]) && !isset($order["lastname"])) {
       $order_person = $order["telephone"];
     } else {
       $order_person = $order["lastname"].' '.$order["firstname"];
     }
 
-    if ($route == "madeshop/order/addOrderHistory") {
-      $title = 'Заявка с быстрого заказа - '.$order_id;
-      $order_person = $order["telephone"];
+    if ($address) {
+      $title = '№ '.$order_id;
     } else {
-      $title = 'Заявка c корзины - '.$order_id;
+      $title = 'Купити в 1 клік - '.$order_id;
+      $order_person = $order["telephone"];
     }
 
     $order_details = array (
       'title'                 => $title,
-      'comment'               => 'Город: '. $order["payment_city"]. '; '.$order['comment'],
-      'total'                 => $totals,
+      'comment'               => $order['comment'],
       'main_responsible_id'   => $keepincrm_user_id,
       'source_id'             => $keepincrm_source,
       'client_attributes'     => array (
@@ -216,7 +184,7 @@ class ControllerExtensionModuleKeepincrm extends Controller {
     );
 
     $curl = curl_init();
-    curl_setopt($curl, CURLOPT_URL, 'https://api.keepincrm.com/v1/agreements'.$ipl);
+    curl_setopt($curl, CURLOPT_URL, 'https://api.keepincrm.com/v1/agreements');
     curl_setopt($curl, CURLOPT_HTTPHEADER, array('Accept: application/json', 'X-Auth-Token: '.$keepincrm_key.'','Content-Type: application/json'));
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
@@ -408,6 +376,8 @@ class ControllerExtensionModuleKeepincrm extends Controller {
     echo("\t\t<offers>\n");
 
     $products = $this->db->query("SELECT DISTINCT product_id, name, description, quantity, image, price, sku, weight, width, length, height FROM ".DB_PREFIX."product INNER JOIN ".DB_PREFIX."product_description USING(product_id)");
+
+    // $products = $this->db->query("SELECT DISTINCT product_id, name, description, quantity, image, price, sku, weight, width, length, height FROM ".DB_PREFIX."product INNER JOIN ".DB_PREFIX."product_description USING(product_id) WHERE language_id = '1'");
     //$products = $this->model_catalog_product->getProducts(array());
     
     $this->load->model('catalog/product');
